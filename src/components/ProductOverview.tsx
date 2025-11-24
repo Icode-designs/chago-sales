@@ -31,6 +31,14 @@ const ProductOverview = ({ product, activeImage, setActiveImage }: Props) => {
   }: Omit<CartItem, "quantity">) => {
     dispatch(addToCart({ title, url, id, price, quantity: 1 }));
   };
+
+  const rating = {
+    5: product.customerReviews.filter((rev) => rev.stars === 5).length,
+    4: product.customerReviews.filter((rev) => rev.stars === 4).length,
+    3: product.customerReviews.filter((rev) => rev.stars === 3).length,
+    2: product.customerReviews.filter((rev) => rev.stars === 2).length,
+    1: product.customerReviews.filter((rev) => rev.stars === 1).length,
+  };
   return (
     <ProductOverviewBox>
       <FlexBox $gap={50} $variant="secondary">
@@ -65,13 +73,11 @@ const ProductOverview = ({ product, activeImage, setActiveImage }: Props) => {
           <h1>{product.title}</h1>
           <p>{formatToNaira(product.price)}</p>
           <FlexBox $gap={10} $justifyContent="center">
-            <FlexBox $justifyContent="right">
-              {numberToStars(product.rating)}
-            </FlexBox>
-            <p>{sumRatings(product.rating)} reviews</p>
+            <FlexBox $justifyContent="right">{numberToStars(rating)}</FlexBox>
+            <p>{product.customerReviews.length} reviews</p>
           </FlexBox>
           <p>{product.description}</p>
-          <FlexBox $gap={16}>
+          <FlexBox $gap={16} $width="100%">
             <CustomButton
               $variant="extended"
               onClick={() =>

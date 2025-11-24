@@ -83,6 +83,7 @@ export const ProductInfoBox = styled.article`
 
     > div:nth-of-type(1) {
       justify-content: unset;
+      justify-self: start;
     }
   }
 `;
@@ -139,8 +140,7 @@ export const TabButton = styled.button<{ $active?: boolean }>`
 export const AnimatedContent = styled.div`
   position: relative;
   overflow: hidden;
-  height: ${pxTorem(400)};
-  padding: ${pxTorem(32)} 0;
+  height: fit-content;
 
   > div {
     width: 100%;
@@ -157,15 +157,15 @@ export const AnimatedContent = styled.div`
 export const AnimatedRating = styled.div`
   position: relative;
   overflow: hidden;
-  height: ${pxTorem(400)};
-  padding: ${pxTorem(32)} 0;
+  height: fit-content;
+  padding: ${pxTorem(32)} 0 0 0;
 
   > div {
     width: 100%;
   }
 
   ul {
-    height: ${pxTorem(150)};
+    height: fit-content;
     progress {
       width: 100%;
       height: 10px;
@@ -193,26 +193,31 @@ export const AnimatedRating = styled.div`
   }
 `;
 
-export const CustomerReviews = styled.div`
-  height: ${pxTorem(150)};
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: ${pxTorem(24)};
-  overflow-y: scroll;
+export const CustomerReviews = styled.section`
+  display: flex;
+  justify-content: left;
+  grid-template-rows: 1fr;
+  gap: ${pxTorem(24)};
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
   align-items: start;
+  padding: ${pxTorem(16)};
+  border-radius: var(--border-radius);
+  &::-webkit-scrollbar {
+    width: ${pxTorem(3)};
+  }
+
+  @media ${QUERY.TABLET} {
+    justify-content: center;
+  }
 
   article {
-    display: block;
-    > ul {
-      display: flex;
-      width: 100%;
-      gap: ${pxTorem(8)};
-      height: fit-content;
-
-      li {
-        width: fit-content !important;
-      }
-    }
+    display: grid;
+    gap: ${pxTorem(16)};
+    text-align: center;
+    min-width: ${pxTorem(300)};
+    padding: ${pxTorem(16)};
   }
 `;
 

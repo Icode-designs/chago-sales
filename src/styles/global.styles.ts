@@ -85,7 +85,7 @@ p, li{
     line-height: 1.4;
 }
 
-input {
+input, textarea {
     border-radius: var(--border-radius);
     padding: ${pxTorem(16)} ${pxTorem(8)} ;
     width: 100%;
@@ -103,7 +103,7 @@ input {
 
    form {
     display: grid;
-    max-width: ${pxTorem(800)};
+    /* max-width: ${pxTorem(800)}; */
     width: 100%;
     border-radius: var(--border-radius);
     gap: ${pxTorem(32)};

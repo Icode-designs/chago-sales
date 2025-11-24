@@ -18,7 +18,7 @@ export default async function UserLayout({
   const session = cookieStore.get("session")?.value;
 
   if (!session) {
-    redirect(`/login?from=/user`);
+    redirect("/login?from=/user");
   }
   const products = await fetchProducts();
   return (

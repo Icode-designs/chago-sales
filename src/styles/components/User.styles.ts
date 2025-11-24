@@ -6,9 +6,8 @@ import QUERY from "../mediaBreakpoints";
 export const StyledSideBar = styled.div<{ $navOpen: boolean }>`
   position: fixed;
   background-color: var(--col-400);
-  height: ${({ $navOpen }) =>
-    $navOpen ? `calc(100vh - ${pxTorem(81)})` : pxTorem(55)};
-  width: ${({ $navOpen }) => ($navOpen ? "100vw" : pxTorem(40))};
+  height: ${({ $navOpen }) => ($navOpen ? pxTorem(300) : pxTorem(55))};
+  width: ${({ $navOpen }) => ($navOpen ? pxTorem(250) : pxTorem(40))};
   margin-top: ${pxTorem(82)};
   display: grid;
   padding: ${pxTorem(16)};
@@ -29,8 +28,6 @@ export const StyledSideBar = styled.div<{ $navOpen: boolean }>`
   }
 
   @media ${QUERY.TABLET} {
-    height: ${({ $navOpen }) =>
-      $navOpen ? `calc(100vh - ${pxTorem(115)})` : pxTorem(55)};
     margin-top: ${pxTorem(112)};
   }
 
@@ -50,7 +47,7 @@ export const StyledSideBar = styled.div<{ $navOpen: boolean }>`
   }
 `;
 
-export const LinksList = styled.ul`
+export const LinksList = styled.ul<{ $show: boolean }>`
   display: grid;
   gap: ${pxTorem(16)};
   text-align: center;
@@ -58,6 +55,11 @@ export const LinksList = styled.ul`
   align-self: start;
   justify-self: center;
   justify-items: center;
+  overflow: hidden;
+  height: ${({ $show }) => ($show ? pxTorem(202) : 0)};
+  overflow: hidden;
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transition: ${({ $show }) => ($show ? "all ease 0.8s" : "all ease 0.3s")};
 
   > button {
     color: var(--col-300);

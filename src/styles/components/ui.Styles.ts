@@ -153,12 +153,13 @@ export const FlexBox = styled.div<{
   $alignItems?: string;
   $gap?: number;
   $variant?: "secondary";
+  $width?: string;
 }>`
   display: flex;
   justify-content: ${({ $justifyContent }) => $justifyContent || "flex-start"};
   align-items: ${({ $alignItems }) => $alignItems || "center"};
   gap: ${({ $gap }) => (typeof $gap === "number" ? pxTorem($gap) : pxTorem(0))};
-
+  width: ${({ $width }) => $width || "unset"};
   ${({ $variant }) =>
     $variant === "secondary" &&
     css`
@@ -166,7 +167,7 @@ export const FlexBox = styled.div<{
       @media ${QUERY.TABLET} {
         flex-direction: row;
       }
-    `}
+    `};
 `;
 
 export const ProductSection = styled.section<{ $variant?: string }>`
@@ -274,6 +275,8 @@ export const ProductsGrid = styled.div`
   background-color: var(--col-100);
   border-bottom-right-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
+  width: 100%;
+  padding: ${pxTorem(16)};
   @media ${QUERY.TABLET} {
     grid-template-columns: repeat(auto-fill, minmax(${pxTorem(200)}, 1fr));
   }

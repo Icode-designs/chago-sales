@@ -71,6 +71,22 @@ const userSlice = createSlice({
         state.currentUser = { ...state.currentUser, ...action.payload };
       }
     },
+
+    addToFavorites: (state, action: PayloadAction<string>) => {
+      if (state.currentUser) {
+        if (!state.currentUser.favorites) {
+          state.currentUser.favorites = [];
+        }
+        state.currentUser.favorites.push(action.payload);
+      }
+    },
+    removeFromFavorites: (state, action: PayloadAction<string>) => {
+      if (state.currentUser && state.currentUser.favorites) {
+        state.currentUser.favorites = state.currentUser.favorites.filter(
+          (itemId) => itemId !== action.payload
+        );
+      }
+    },
   },
 });
 
@@ -81,5 +97,7 @@ export const {
   clearError,
   logout,
   updateUserData,
+  addToFavorites,
+  removeFromFavorites,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -148,13 +148,13 @@ export const SearchResultsBox = styled.div`
 export const CartContainer = styled.div`
   position: relative;
   width: ${pxTorem(40)};
-  height: ${pxTorem(50)};
+  height: ${pxTorem(55)};
   display: flex;
   align-items: center;
   .amount {
     color: var(--col-000);
     position: absolute;
     top: 0;
-    right: 0;
+    right: ${pxTorem(8)};
   }
 `;

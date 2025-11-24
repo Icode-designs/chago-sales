@@ -8,7 +8,8 @@ import {
 } from "@/styles/components/productDetails";
 import { FlexBox } from "@/styles/components/ui.Styles";
 import { PRODUCTS } from "@/utils/data";
-import ProductReview from "./ProductReview";
+import ProductReview from "./ProductRating";
+import ProductRating from "./ProductRating";
 
 interface Props {
   product: (typeof PRODUCTS)[0];
@@ -83,7 +84,7 @@ const ProductDetails = ({ product }: Props) => {
             </AnimatePresence>
           </AnimatedContent>
         </ProductSpecs>
-        <ProductReview product={product} />
+        <ProductRating product={product} />
       </FlexBox>
     </section>
   );

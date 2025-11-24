@@ -1,15 +1,17 @@
 "use client";
+import { updateUserDocument } from "@/lib/services/userService";
 import { addToCart, CartItem } from "@/store/slices/cartSlice";
-import { AppDispatch } from "@/store/store";
+import { addToFavorites, removeFromFavorites } from "@/store/slices/userSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { CustomButton, ProductCard } from "@/styles/components/ui.Styles";
 import PRODUCT from "@/types/productsType";
 import formatToNaira from "@/utils/formatPrice";
 import { numberToStars } from "@/utils/ratings";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 interface CardProps {
   children?: React.ReactNode;
@@ -19,12 +21,31 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ children, variant, product }) => {
-  const [isFavourite, setIsFavourite] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.currentUser);
+
+  // Derive favorite status from Redux store instead of local state
+  const isFavourite = useMemo(
+    () => user?.favorites?.includes(product?.id as string) ?? false,
+    [user?.favorites, product?.id]
+  );
 
   function toggleFavourite() {
-    setIsFavourite((prev) => !prev);
+    if (isFavourite) {
+      dispatch(removeFromFavorites(product?.id as string));
+    } else {
+      dispatch(addToFavorites(product?.id as string));
+    }
   }
+
+  // Sync favorites to database when they change
+  useEffect(() => {
+    if (user?.favorites) {
+      updateUserDocument(user.uid, {
+        favorites: user.favorites,
+      });
+    }
+  }, [user?.favorites, user?.uid]);
 
   const handleAddToCart = ({
     title,
@@ -35,6 +56,7 @@ const Card: React.FC<CardProps> = ({ children, variant, product }) => {
     dispatch(addToCart({ title, id, url, price, quantity: 1 }));
   };
 
+  if (!product && variant !== "categories") return null;
   return (
     <ProductCard $variant={variant}>
       {variant !== "categories" && (

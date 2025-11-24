@@ -1,7 +1,9 @@
 "use client";
 import ProductDetails from "@/components/ProductDetails";
 import ProductOverview from "@/components/ProductOverview";
+import ProductReviews from "@/components/ProductReviews";
 import RelatedProducts from "@/components/RelatedProducts";
+import UserReview, { ReviewData } from "@/components/UserReview";
 import { MainContainer } from "@/styles/components/ui.Styles";
 import PRODUCT from "@/types/productsType";
 import getProductById from "@/utils/getProduct";
@@ -52,6 +54,10 @@ const Page = ({ params }: { params: Promise<{ productId: string }> }) => {
         setActiveImage={setActiveImage}
       />
       <ProductDetails product={productState.product as PRODUCT} />
+      <ProductReviews
+        reviews={productState.product.customerReviews as ReviewData[]}
+      />
+      <UserReview productId={productState.product.id} />
       <RelatedProducts product={productState.product as PRODUCT} />
     </MainContainer>
   );

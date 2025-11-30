@@ -43,7 +43,6 @@ const Page = () => {
     const confirmPassword = (formData.get("confirm-password") as string) || "";
     const firstName = formData.get("first-name") as string;
     const lastName = formData.get("last-name") as string;
-    const storeName = formData.get("store-name") as string;
 
     const newErrors: ERRORTYPE = {};
 
@@ -70,10 +69,7 @@ const Page = () => {
         firstName,
         lastName,
         displayName: `${firstName} ${lastName}`,
-        role: "vendor" as const,
-        vendorData: {
-          businessname: storeName,
-        },
+        role: "customer" as const,
       };
 
       // Register user
@@ -250,21 +246,7 @@ const Page = () => {
           </FlexBox>
 
           <div>
-            <input
-              type="text"
-              placeholder="Store / Business name"
-              name="store-name"
-              required
-            />
-          </div>
-
-          <div>
             <input type="email" placeholder="Email" name="email" required />
-            {error.emailErr && <p className="error">{error.emailErr}</p>}
-          </div>
-
-          <div>
-            <input type="number" placeholder="Enter NIN" name="nin" required />
             {error.emailErr && <p className="error">{error.emailErr}</p>}
           </div>
 

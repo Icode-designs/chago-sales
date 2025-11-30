@@ -67,7 +67,7 @@ h1{
     line-height: 1.2;
     text-transform: capitalize;
 }
-h2, legend{
+h2{
     font-size: clamp(${pxTorem(24)},${pxTorem(28)},${pxTorem(32)});
     font-weight: var(--bold);
     line-height: 1.3;
@@ -85,8 +85,7 @@ p, li{
     line-height: 1.4;
 }
 
-input, textarea, select {
-  display: block;
+input, textarea {
     border-radius: var(--border-radius);
     padding: ${pxTorem(16)} ${pxTorem(8)} ;
     width: 100%;
@@ -96,21 +95,10 @@ input, textarea, select {
       width: fit-content;
       border-radius: var(--border-radius);
     }
-    &[type='file']{
-      display: none;
-    }
-
   }
   input:focus {
     border-color: var(--col-400);
     outline: none;
-  }
-
-  input:read-only{
-    cursor: not-allowed;
-    &:hover{
-      cursor: not-allowed;
-    }
   }
 
    form {
@@ -126,7 +114,7 @@ input, textarea, select {
     div {
       position: relative;
       width: 100%;
-     
+
       .password {
         padding-right: ${pxTorem(50)};
       }
@@ -152,10 +140,6 @@ input, textarea, select {
       border: none;
       display: grid;
       gap: ${pxTorem(24)};
-      legend{
-        text-align: center;
-        margin-bottom: ${pxTorem(16)};
-      }
     }
 
     .seperator {

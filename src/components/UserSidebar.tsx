@@ -8,12 +8,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { handleLogoutAction } from "@/app/user/actions";
 import { logoutUser } from "@/utils/auth";
+import { clearCart } from "@/store/slices/cartSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import NavLink from "./UserNavlink";
 
 const UserSidebar = () => {
   const router = useRouter();
+
+  const dispatch = useDispatch();
   const navCtx = useContext(NAV_CONTEXT);
   const isLargeScreen = useMediaQuery(1200);
 
@@ -36,8 +39,11 @@ const UserSidebar = () => {
       // Log out from Firebase
       await logoutUser();
 
+      // Clear cart state
+      dispatch(clearCart());
+
       // Redirect to home
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -51,18 +57,16 @@ const UserSidebar = () => {
 
       <LinksList $show={navOpen}>
         <li>
-          <NavLink href="/user/salesboard">Salesboard</NavLink>
+          <NavLink href="/user/profile">Profile</NavLink>
         </li>
         <li>
-          <NavLink href="/user/edit-profile">Edit Profile</NavLink>
+          <NavLink href="/user/track-order">Track order</NavLink>
         </li>
         <li>
-          <NavLink href="/user/add-product">Add Product</NavLink>
+          <NavLink href="/user/order-history">Order History</NavLink>
         </li>
         <li>
-          <NavLink href={`/user/products-list/${"all-products"}`}>
-            Products
-          </NavLink>
+          <NavLink href="/user/favorites">Favorites</NavLink>
         </li>
 
         <button onClick={handleLogout}>

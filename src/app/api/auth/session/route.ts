@@ -1,6 +1,6 @@
 // app/api/auth/session/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { adminAuth } from "@/lib/firebaseAdmin";
+import { getFirebaseAdmin } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
@@ -11,12 +11,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No token provided" }, { status: 400 });
     }
 
-    // Verify the token;
-    const decodedToken = await adminAuth.verifyIdToken(idToken);
+    // Verify the token
+    const auth = getFirebaseAdmin();
+    const decodedToken = await auth.verifyIdToken(idToken);
 
     // Create session cookie (expires in 5 days)
     const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days in milliseconds
-    const sessionCookie = await adminAuth.createSessionCookie(idToken, {
+    const sessionCookie = await auth.createSessionCookie(idToken, {
       expiresIn,
     });
 

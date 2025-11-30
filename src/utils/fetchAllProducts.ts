@@ -1,58 +1,21 @@
 import { db } from "@/lib/firebaseCl";
 import PRODUCT from "@/types/productsType";
-import { DocumentData } from "firebase-admin/firestore";
-import {
-  collection,
-  getDocs,
-  query,
-  Timestamp,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
-// Helper: convert Firestore Timestamp → millis OR recursively clean object
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function cleanData(obj: DocumentData): any {
-  if (obj instanceof Timestamp) {
-    return obj.toMillis();
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map(cleanData);
-  }
-
-  if (obj !== null && typeof obj === "object") {
-    const plain: DocumentData = {};
-    for (const key in obj) {
-      plain[key] = cleanData(obj[key]);
-    }
-    return plain;
-  }
-
-  return obj; // primitive
-}
-
-export async function fetchProducts(userId: string): Promise<PRODUCT[]> {
+export async function fetchProducts(): Promise<PRODUCT[]> {
   try {
-    const productsCollectionRef = query(
-      collection(db, "products"),
-      where("sellerId", "==", userId)
-    );
+    const productsCollectionRef = collection(db, "products");
+    const querySnapshot = await getDocs(productsCollectionRef);
 
-    const snap = await getDocs(productsCollectionRef);
-
-    const products = snap.docs.map((doc) => {
-      const rawData = doc.data();
-
-      return {
-        id: doc.id,
-        ...cleanData(rawData),
-      } as PRODUCT;
-    });
+    // Convert Firestore docs to plain objects
+    const products = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<PRODUCT, "id">),
+    }));
 
     return products;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error fetching products:", err);
-    throw err;
+    throw err; // Let the context handle the error
   }
 }

@@ -9,32 +9,16 @@ import {
 import { db } from "../firebaseCl";
 import { UserData } from "@/store/slices/userSlice";
 
-interface PaymentInfo {
-  accountNumber?: string;
-  bankName?: string;
-  accountName?: string;
-  BVN?: string;
-}
-
-export interface VendorData {
-  NIN?: string;
-  verified?: boolean;
-  establishedDate?: string;
-  businessname?: string;
-  productsOffered?: string[];
-  paymentInfo?: PaymentInfo;
-}
-
 export interface CreateUserData {
   firstName?: string;
   lastName?: string;
   email: string;
   displayName?: string;
-  role?: "vendor";
+  role?: "customer";
   photoURL?: string;
   phoneNumber?: string;
   address?: string;
-  vendorData?: VendorData;
+  favorites?: string[];
 }
 
 // Create user document in Firestore
@@ -51,11 +35,10 @@ export const createUserDocument = async (
       lastName: userData.lastName,
       email: userData.email,
       displayName: userData.displayName || null,
-      role: "vendor",
+      role: "customer",
       photoURL: userData.photoURL || null,
       phoneNumber: userData.phoneNumber || null,
       address: userData.address || "",
-      vendorData: userData.vendorData || {},
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
@@ -94,7 +77,7 @@ export const getUserDocument = async (
         photoURL: data.photoURL,
         phoneNumber: data.phoneNumber,
         address: data.address,
-        vendorData: data.vendorData,
+        favorites: data.favorites,
         createdAt: data.createdAt?.toDate().toISOString(),
         updatedAt: data.updatedAt?.toDate().toISOString(),
       } as UserData;

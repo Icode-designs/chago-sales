@@ -12,10 +12,8 @@ import useMediaQuery from "@/hooks/useMedia";
 import { PRODUCTS_CONTEXT } from "@/providers/productsProvider";
 import PRODUCT from "@/types/productsType";
 import { FILTER_CONTEXT } from "@/providers/filterProvider";
-
+import Cart from "./Cart";
 import { CATEGORIES } from "@/utils/imageImport";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 
 interface SearchProcess {
   isTyping: boolean;
@@ -29,9 +27,8 @@ const Header = () => {
     isTyping: false,
     result: undefined,
   });
-  const products = useSelector((state: RootState) => state.products.products);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const productsCtx = useContext(PRODUCTS_CONTEXT);
   const isTablet = useMediaQuery(768);
 
   const filterCtx = useContext(FILTER_CONTEXT);
@@ -39,8 +36,8 @@ const Header = () => {
   const categories = Object.entries(CATEGORIES);
 
   const handleChange = useCallback(() => {
-    if (!products) return;
-
+    if (!productsCtx?.products) return;
+    const { products } = productsCtx;
     const searchKeyword = inputRef.current?.value.trim().toLowerCase() || "";
 
     if (!searchKeyword) {
@@ -54,7 +51,7 @@ const Header = () => {
       ) || [];
 
     setSearchProcess({ isTyping: true, result: searchResult });
-  }, []);
+  }, [productsCtx]);
 
   const handleBlur = useCallback(() => {
     setTimeout(() => {
@@ -62,8 +59,8 @@ const Header = () => {
     }, 300);
   }, []);
 
-  if (!products) {
-    return <p>Unable to load products. Try refreshing the page.</p>;
+  if (!productsCtx) {
+    return <p>Unable to load products context. Try refreshing the page.</p>;
   }
 
   function handleShowCategories() {
@@ -112,6 +109,18 @@ const Header = () => {
             onBlur={handleBlur}
           />
         </StyledSearchBar>
+
+        <FlexBox $gap={32} className="menu">
+          {isTablet && (
+            <FlexBox $gap={24}>
+              <Link href="/user">
+                <FaRegUserCircle size={24} color="var(--col-000)" />
+              </Link>
+
+              <Cart />
+            </FlexBox>
+          )}
+        </FlexBox>
       </div>
 
       {searchProcess.isTyping && (

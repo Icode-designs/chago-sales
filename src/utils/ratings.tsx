@@ -1,6 +1,5 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { ReactElement } from "react";
-import Product from "@/types/productsType";
 
 export interface Reviews {
   5: number;
@@ -8,17 +7,6 @@ export interface Reviews {
   3: number;
   2: number;
   1: number;
-}
-
-export function extractRating(product: Product) {
-  if (!product) return null;
-  return {
-    5: product.customerReviews?.filter((rev) => rev.stars === 5).length || 0,
-    4: product.customerReviews?.filter((rev) => rev.stars === 4).length || 0,
-    3: product.customerReviews?.filter((rev) => rev.stars === 3).length || 0,
-    2: product.customerReviews?.filter((rev) => rev.stars === 2).length || 0,
-    1: product.customerReviews?.filter((rev) => rev.stars === 1).length || 0,
-  } as Reviews;
 }
 
 function calculateAverageRating(reviews: Reviews): number {

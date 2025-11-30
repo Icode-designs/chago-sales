@@ -1,15 +1,14 @@
 "use client";
 
-import { handleLogoutAction } from "@/app/user/actions";
 import { getUserDocument } from "@/lib/services/userService";
 import { setUser } from "@/store/slices/userSlice";
 import { AppDispatch } from "@/store/store";
 import { AuthMain, CustomButton, FlexBox } from "@/styles/components/ui.Styles";
-import { loginUser, logoutUser } from "@/utils/auth";
+import { loginUser } from "@/utils/auth";
 import { FirebaseError } from "firebase/app";
 
 import Link from "next/link";
-import { useSearchParams, useRouter, redirect } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -57,20 +56,6 @@ const Page = () => {
 
       // Set user data
       const userData = await getUserDocument(user.uid);
-
-      //logout and redirect if user is not a seller account
-      if (userData?.role !== "vendor" || !userData) {
-        alert("user is not a seller account!!!");
-        // Delete session cookie on server
-        await handleLogoutAction();
-
-        // Log out from Firebase
-        await logoutUser();
-
-        //redirect to sign-up
-        redirect("/signup");
-      }
-
       dispatch(setUser(userData));
 
       // Create session cookie

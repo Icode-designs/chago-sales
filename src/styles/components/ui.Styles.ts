@@ -3,7 +3,6 @@ import pxTorem from "@/utils/pxToRem";
 import styled, { css } from "styled-components";
 import QUERY from "../mediaBreakpoints";
 import Link from "next/link";
-import Image from "next/image";
 
 export const MainContainer = styled.main<{ $variant?: "secondary" }>`
   max-width: var(--max-width);
@@ -23,16 +22,15 @@ export const MainContainer = styled.main<{ $variant?: "secondary" }>`
   ${({ $variant }) =>
     $variant === "secondary" &&
     css`
-      margin: 0;
+      margin-top: ${pxTorem(94)};
       background-color: var(--col-100);
       border-radius: var(--border-radius);
       padding: ${pxTorem(16)};
       @media ${QUERY.TABLET} {
-        margin: 0;
+        margin-top: ${pxTorem(140)} !important;
         padding: ${pxTorem(24)};
       }
       @media ${QUERY.DESKTOP} {
-        margin: 0;
         padding: ${pxTorem(40)};
       }
     `}
@@ -298,9 +296,6 @@ export const AuthMain = styled.main`
       opacity: 1;
     }
   }
-  form {
-    max-width: ${pxTorem(700)};
-  }
 
   animation: entry ease-in-out 0.5s;
 
@@ -316,34 +311,6 @@ export const AuthMain = styled.main`
           flex: 1.5;
         }
       }
-    }
-  }
-`;
-
-export const Column = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: ${pxTorem(16)};
-`;
-
-export const FormImages = styled(Image)`
-  max-width: 100%;
-  height: ${pxTorem(150)};
-  object-fit: contain;
-  border-radius: ${pxTorem(8)};
-`;
-
-export const ImageGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(${pxTorem(150)}, 1fr));
-  gap: ${pxTorem(16)};
-  > div {
-    position: relative;
-
-    .delete {
-      position: absolute;
-      top: 0;
-      left: 0;
     }
   }
 `;

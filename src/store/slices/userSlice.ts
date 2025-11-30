@@ -1,5 +1,4 @@
 // userSlice.ts
-import { VendorData } from "@/lib/services/userService";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Address {
@@ -14,13 +13,13 @@ export interface UserData {
   uid: string;
   email: string | null;
   displayName: string | null;
-  role: "vendor";
+  role: "customer";
   photoURL?: string | null;
   createdAt?: string;
   updatedAt?: string;
   phoneNumber?: string | null;
   address?: Address;
-  vendorData: VendorData;
+  favorites?: string[];
 }
 
 interface UserState {
@@ -73,20 +72,19 @@ const userSlice = createSlice({
       }
     },
 
-    addToProducts: (state, action: PayloadAction<string>) => {
+    addToFavorites: (state, action: PayloadAction<string>) => {
       if (state.currentUser) {
-        if (!state.currentUser.vendorData.productsOffered) {
-          state.currentUser.vendorData.productsOffered = [];
+        if (!state.currentUser.favorites) {
+          state.currentUser.favorites = [];
         }
-        state.currentUser.vendorData.productsOffered.push(action.payload);
+        state.currentUser.favorites.push(action.payload);
       }
     },
-    removeFromProducts: (state, action: PayloadAction<string>) => {
-      if (state.currentUser && state.currentUser.vendorData.productsOffered) {
-        state.currentUser.vendorData.productsOffered =
-          state.currentUser.vendorData.productsOffered.filter(
-            (itemId) => itemId !== action.payload
-          );
+    removeFromFavorites: (state, action: PayloadAction<string>) => {
+      if (state.currentUser && state.currentUser.favorites) {
+        state.currentUser.favorites = state.currentUser.favorites.filter(
+          (itemId) => itemId !== action.payload
+        );
       }
     },
   },
@@ -99,7 +97,7 @@ export const {
   clearError,
   logout,
   updateUserData,
-  addToProducts,
-  removeFromProducts,
+  addToFavorites,
+  removeFromFavorites,
 } = userSlice.actions;
 export default userSlice.reducer;

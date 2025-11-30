@@ -1,31 +1,24 @@
-interface PRODUCT {
-  id: string;
-  category: string;
-  title: string;
-  price: number;
-  rating: {
-    5: number;
-    4: number;
-    3: number;
-    2: number;
-    1: number;
-  };
-  description: string;
-  specifications: {
-    display: string;
-    chipset: string;
-    ram: string;
-    storage: string;
-    cameras: string;
-    battery: string;
-    os: string;
-  };
-  customerReviews: {
-    user: string;
-    stars: number;
-    comment: string;
-  }[];
-  image: string[];
+interface CustomerReviews {
+  user: string;
+  stars: number;
+  comment: string;
 }
 
-export default PRODUCT;
+export interface SPECS {
+  spec: string;
+  detail: string;
+}
+
+export interface Product {
+  id?: string;
+  sellerId: string;
+  category: string;
+  title: string;
+  price: string;
+  description: string;
+  productStock: string;
+  specifications: SPECS[];
+  customerReviews?: CustomerReviews[];
+  images: string[];
+}
+export default Product;

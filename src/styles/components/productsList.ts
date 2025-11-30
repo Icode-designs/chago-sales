@@ -7,12 +7,13 @@ export const StyledProductsList = styled.section`
   background-color: var(--col-100);
   border-radius: var(--border-radius);
   padding: ${pxTorem(40)} ${pxTorem(16)};
+  width: 100%;
 `;
 
 export const StyledFilter = styled.div<{ $isOpen: boolean }>`
-  position: fixed;
-  top: ${({ $isOpen }) => ($isOpen ? pxTorem(80) : pxTorem(115))};
-  right: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: var(--col-100);
   width: ${({ $isOpen }) => ($isOpen ? "100%" : pxTorem(60))};
   height: ${({ $isOpen }) =>
@@ -21,7 +22,7 @@ export const StyledFilter = styled.div<{ $isOpen: boolean }>`
   transition: all 0.4s ease, height 0.4s ease, padding 0.3s ease;
   padding: ${pxTorem(16)};
   padding-top: 0;
-  border-radius: ${pxTorem(12)} 0 0 ${pxTorem(12)};
+  border-radius: 0 ${pxTorem(12)} ${pxTorem(12)} 0;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -47,7 +48,8 @@ export const StyledFilter = styled.div<{ $isOpen: boolean }>`
 
   @media ${QUERY.TABLET} {
     width: ${({ $isOpen }) => ($isOpen ? "50%" : pxTorem(60))};
-    top: ${pxTorem(112)};
+    height: ${({ $isOpen }) =>
+      $isOpen ? `calc(100vh - ${pxTorem(112)})` : pxTorem(60)};
   }
 `;
 
@@ -55,7 +57,7 @@ export const StyledFilterForm = styled.form`
   padding: ${pxTorem(24)};
   display: grid;
   gap: ${pxTorem(24)};
-  height: 100%;
+  height: fit-content;
   align-content: start;
   overflow-y: auto;
   scroll-behavior: smooth;

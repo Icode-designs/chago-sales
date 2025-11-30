@@ -38,10 +38,11 @@ export const registerUser = async (
       firstName: additionalData?.firstName,
       lastName: additionalData?.lastName,
       displayName: additionalData?.displayName || user.displayName || undefined,
-      role: "customer",
+      role: "vendor",
       photoURL: user.photoURL || undefined,
       phoneNumber: additionalData?.phoneNumber || undefined,
       address: additionalData?.address || undefined,
+      vendorData: additionalData?.vendorData,
     };
 
     await createUserDocument(user.uid, userData);
@@ -79,7 +80,7 @@ export const signInWithGoogle = async () => {
       const userData: CreateUserData = {
         email: user.email!,
         displayName: user.displayName || undefined,
-        role: "customer",
+        role: "vendor",
         photoURL: user.photoURL || undefined,
       };
 

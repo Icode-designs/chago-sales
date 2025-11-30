@@ -7,12 +7,11 @@ import {
   TabButton,
 } from "@/styles/components/productDetails";
 import { FlexBox } from "@/styles/components/ui.Styles";
-import { PRODUCTS } from "@/utils/data";
-import ProductReview from "./ProductRating";
 import ProductRating from "./ProductRating";
+import Product from "@/types/productsType";
 
 interface Props {
-  product: (typeof PRODUCTS)[0];
+  product: Product;
 }
 
 const ProductDetails = ({ product }: Props) => {
@@ -32,7 +31,7 @@ const ProductDetails = ({ product }: Props) => {
     }),
   };
 
-  const specs = Object.entries(product.specifications);
+  const specs = product.specifications;
 
   const direction = activeTab === "description" ? "left" : "right";
 
@@ -74,8 +73,8 @@ const ProductDetails = ({ product }: Props) => {
                   <ul>
                     {specs.map((spec, index) => (
                       <li key={index}>
-                        <h3>{spec[0]}</h3>
-                        <p>{spec[1]}</p>
+                        <h3>{spec.spec}</h3>
+                        <p>{spec.detail}</p>
                       </li>
                     ))}
                   </ul>

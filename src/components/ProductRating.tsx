@@ -5,24 +5,22 @@ import {
   AnimatedRating,
 } from "@/styles/components/productDetails";
 import { FlexBox } from "@/styles/components/ui.Styles";
-import { PRODUCTS } from "@/utils/data";
+import Product from "@/types/productsType";
+import { extractRating, Reviews } from "@/utils/ratings";
 
 interface Props {
-  product: (typeof PRODUCTS)[0];
+  product: Product;
 }
 
 const ProductRating = ({ product }: Props) => {
-  const productRatings = {
-    5: product.customerReviews.filter((rev) => rev.stars === 5).length,
-    4: product.customerReviews.filter((rev) => rev.stars === 4).length,
-    3: product.customerReviews.filter((rev) => rev.stars === 3).length,
-    2: product.customerReviews.filter((rev) => rev.stars === 2).length,
-    1: product.customerReviews.filter((rev) => rev.stars === 1).length,
-  };
+  const productRatings = extractRating(product);
 
-  const rating = Object.entries(productRatings);
-  const total = rating.reduce((acc, current) => acc + current[1], 0);
+  const rating = productRatings ? Object.entries(productRatings) : [];
 
+  console.log(rating);
+
+  const total =
+    rating?.reduce((acc, current) => acc + (current[1] as number), 0) ?? 0;
   return (
     <ProductSpecs>
       <h3>Rating Details</h3>
@@ -34,8 +32,11 @@ const ProductRating = ({ product }: Props) => {
             <li key={index}>
               <FlexBox $justifyContent="space-between" $gap={10}>
                 {amt[0]}
-                <progress value={(amt[1] / total) * 100} max={100} />
-                <p>{((amt[1] / total) * 100).toFixed(2)}%</p>
+                <progress
+                  value={((amt[1] as number) / total) * 100 || 0}
+                  max={100}
+                />
+                <p>{((amt[1] as number) / total) * 100 || 0}% </p>
               </FlexBox>
             </li>
           ))}

@@ -3,8 +3,8 @@ import { createContext, useState, useCallback, useMemo } from "react";
 
 interface FilterValues {
   categories: string[];
-  minPrice: string;
-  maxPrice: string;
+  minPrice: number | null;
+  maxPrice: number | null;
   rating: number[];
   searchTerm?: string;
 }
@@ -23,8 +23,8 @@ const FilterContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [filters, setFilters] = useState<FilterValues>({
     categories: [],
-    minPrice: "",
-    maxPrice: "",
+    minPrice: null,
+    maxPrice: null,
     rating: [],
     searchTerm: "",
   });
@@ -32,8 +32,8 @@ const FilterContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const handleSubmit = useCallback(async (formData: FormData) => {
     const categories = formData.getAll("categories").map((v) => v.toString());
 
-    const minPrice = formData.get("min")?.toString() ?? "";
-    const maxPrice = formData.get("max")?.toString() ?? "";
+    const minPrice = Number(formData.get("min")) ?? null;
+    const maxPrice = Number(formData.get("max")) ?? null;
 
     const ratingEntries = formData.getAll("stars").map((v) => v.toString());
 
@@ -59,8 +59,8 @@ const FilterContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const resetFilters = useCallback(() => {
     setFilters({
       categories: [],
-      minPrice: "",
-      maxPrice: "",
+      minPrice: null,
+      maxPrice: null,
       rating: [],
       searchTerm: "",
     });

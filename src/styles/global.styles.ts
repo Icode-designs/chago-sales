@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
 
     // Others
   --border-radius: ${pxTorem(12)};
-  --shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  --shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
   --max-width: ${pxTorem(1200)};
   --centered: 0 auto;
 }

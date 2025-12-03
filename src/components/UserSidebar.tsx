@@ -51,9 +51,6 @@ const UserSidebar = () => {
 
       <LinksList $show={navOpen}>
         <li>
-          <NavLink href="/user/salesboard">Salesboard</NavLink>
-        </li>
-        <li>
           <NavLink href="/user/edit-profile">Edit Profile</NavLink>
         </li>
         <li>

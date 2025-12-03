@@ -3,13 +3,11 @@
 import { HeaderContainer, SearchResultsBox } from "@/styles/components/header";
 import { FlexBox, StyledSearchBar } from "@/styles/components/ui.Styles";
 import Link from "next/link";
-import { FaRegUserCircle } from "react-icons/fa";
 
 import { FaAngleDown } from "react-icons/fa6";
 import { useCallback, useContext, useRef, useState } from "react";
 import Logo from "./Logo";
-import useMediaQuery from "@/hooks/useMedia";
-import { PRODUCTS_CONTEXT } from "@/providers/productsProvider";
+
 import PRODUCT from "@/types/productsType";
 import { FILTER_CONTEXT } from "@/providers/filterProvider";
 
@@ -31,8 +29,6 @@ const Header = () => {
   });
   const products = useSelector((state: RootState) => state.products.products);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const isTablet = useMediaQuery(768);
 
   const filterCtx = useContext(FILTER_CONTEXT);
 
@@ -77,7 +73,7 @@ const Header = () => {
         <nav>
           <ul>
             <li onClick={navOpen ? () => setNavOpen(false) : undefined}>
-              <Link href={`/products/products-list/${"all-products"}`}>
+              <Link href={`/user/products-list/${"all-products"}`}>
                 Products
               </Link>
             </li>
@@ -91,7 +87,7 @@ const Header = () => {
                 <ul>
                   {categories.map(([name], i) => (
                     <li key={i}>
-                      <Link href={`/products/products-list/${name}`}>
+                      <Link href={`/user/products-list/${name}`}>
                         {name.replace(/-/g, " ")}
                       </Link>
                     </li>

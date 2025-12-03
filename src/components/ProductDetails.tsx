@@ -37,7 +37,12 @@ const ProductDetails = ({ product }: Props) => {
 
   return (
     <section>
-      <FlexBox $gap={40} $variant="secondary" $alignItems="flex-start">
+      <FlexBox
+        $gap={40}
+        $variant="secondary"
+        $alignItems="flex-start"
+        $width="100%"
+      >
         <ProductSpecs>
           {/* Tabs */}
           <FlexBox $gap={24}>

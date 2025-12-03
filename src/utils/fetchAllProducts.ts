@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebaseCl";
-import PRODUCT from "@/types/productsType";
+import PRODUCT, { Product } from "@/types/productsType";
 import { DocumentData } from "firebase-admin/firestore";
 import {
   collection,
@@ -47,7 +47,7 @@ export async function fetchProducts(userId: string): Promise<PRODUCT[]> {
       return {
         id: doc.id,
         ...cleanData(rawData),
-      } as PRODUCT;
+      } as Product;
     });
 
     return products;

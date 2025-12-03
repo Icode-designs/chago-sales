@@ -113,8 +113,9 @@ export const UserContent = styled.div`
   position: relative;
   width: 100%;
   padding: ${pxTorem(40)} ${pxTorem(24)} ${pxTorem(90)};
-  display: flex;
-  justify-content: center;
+  display: grid;
+  gap: ${pxTorem(40)};
+  justify-items: center;
   align-items: top;
   min-height: calc(100vh - ${pxTorem(82)});
   @media ${QUERY.DESKTOP} {
@@ -137,4 +138,43 @@ export const UserContentContainer = styled.section`
   @media ${QUERY.DESKTOP} {
     max-height: calc(100vh - ${pxTorem(112)});
   }
+`;
+
+export const StyledImagePlaceholder = styled.div`
+  height: ${pxTorem(200)};
+  width: ${pxTorem(200)};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--col-000);
+  svg {
+    font-size: ${pxTorem(100)};
+    color: grey;
+  }
+`;
+
+export const ImageForm = styled.form`
+  background: none;
+  padding: 0;
+  display: grid;
+  justify-items: center;
+  label {
+    cursor: pointer;
+  }
+`;
+
+export const StyledSalesContent = styled.ul`
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  gap: ${pxTorem(24)};
+  align-content: start;
+`;
+
+export const StledSalesCard = styled.li`
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--col-100);
+  background-color: var(--border-radius);
 `;

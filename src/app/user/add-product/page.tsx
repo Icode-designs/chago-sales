@@ -27,7 +27,7 @@ const Page = () => {
       detail: "",
     },
   ]);
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [images, setImages] = useState<File[]>([]);
   const [previewURLs, setPreviewURLs] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -195,7 +195,7 @@ const Page = () => {
       alert("Product added successfully!");
 
       // Reset form
-      e.currentTarget.reset();
+      formRef.current?.reset();
       resetForm();
     } catch (err) {
       console.error("Product upload error:", err);

@@ -71,6 +71,10 @@ export const ProductInfoBox = styled.article`
     justify-content: center;
   }
 
+  .deleteBtn {
+    width: 100%;
+  }
+
   @media ${QUERY.TABLET} {
     > * {
       justify-items: unset;

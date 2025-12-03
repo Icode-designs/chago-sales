@@ -88,6 +88,7 @@ export const CustomButton = styled.button<{
   border-radius: var(--border-radius);
   font-weight: var(--bold);
   text-transform: capitalize;
+  font-size: ${pxTorem(16)};
 
   ${({ $variant }) =>
     $variant === "extended" &&
@@ -98,11 +99,14 @@ export const CustomButton = styled.button<{
   ${({ $variant }) =>
     $variant === "outlined" &&
     css`
-      background-color: none !important;
+      background-color: transparent;
+      color: var(--col-400);
       border: ${pxTorem(1)} solid var(--col-400);
+      padding: ${pxTorem(19)};
 
       &:hover {
         background-color: var(--col-400);
+        color: var(--col-100);
       }
     `}
 
@@ -137,7 +141,7 @@ export const CustomLink = styled(Link)<{
   ${({ $variant }) =>
     $variant === "outlined" &&
     css`
-      background-color: none;
+      background-color: transparent;
       border: ${pxTorem(1)} solid var(--col-400);
 
       &:hover {
@@ -162,6 +166,7 @@ export const FlexBox = styled.div<{
   align-items: ${({ $alignItems }) => $alignItems || "center"};
   gap: ${({ $gap }) => (typeof $gap === "number" ? pxTorem($gap) : pxTorem(0))};
   width: ${({ $width }) => $width || "unset"};
+
   ${({ $variant }) =>
     $variant === "secondary" &&
     css`
@@ -320,10 +325,12 @@ export const AuthMain = styled.main`
   }
 `;
 
-export const Column = styled.div`
+export const Column = styled.div<{ $align?: string; $justify?: string }>`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${pxTorem(16)};
+  align-content: ${({ $align }) => $align || "start"};
+  justify-items: ${({ $justify }) => $justify || "start"};
 `;
 
 export const FormImages = styled(Image)`

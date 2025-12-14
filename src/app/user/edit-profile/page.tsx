@@ -15,6 +15,7 @@ import { FirebaseError } from "firebase/app";
 import { handleLogoutAction } from "../actions";
 import { logoutUser } from "@/utils/auth";
 import { useRouter } from "next/navigation";
+import { Vendor } from "@/types/userTypes";
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -73,7 +74,7 @@ const Page = () => {
     }
 
     // prepare update payload - remove undefined values
-    const updateData: Partial<UserData> = {};
+    const updateData: Partial<Vendor> = {};
 
     if (phoneNumber) {
       updateData.phoneNumber = phoneNumber;

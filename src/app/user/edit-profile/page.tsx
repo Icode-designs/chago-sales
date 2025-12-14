@@ -227,7 +227,7 @@ const Page = () => {
                 name="nin"
                 id="nin"
                 placeholder="Enter National Identification Number"
-                value={user?.vendorData.NIN ? user.vendorData.NIN : undefined}
+                value={user?.vendorData?.NIN ? user.vendorData?.NIN : undefined}
                 readOnly
               />
             </div>
@@ -239,7 +239,7 @@ const Page = () => {
               name="storeName"
               id="storeName"
               placeholder="Store / Business Name"
-              value={user?.vendorData.businessname}
+              value={user?.vendorData?.businessname}
               readOnly
             />
           </div>
@@ -335,7 +335,7 @@ const Page = () => {
               id="account-name"
               name="account-name"
               placeholder="Account Name"
-              defaultValue={user?.vendorData.paymentInfo?.accountName}
+              defaultValue={user?.vendorData?.paymentInfo?.accountName}
             />
           </div>
           <div>
@@ -345,7 +345,7 @@ const Page = () => {
               id="BVN"
               name="BVN"
               placeholder="Enter BVN"
-              defaultValue={user?.vendorData.paymentInfo?.BVN}
+              defaultValue={user?.vendorData?.paymentInfo?.BVN}
             />
           </div>
           <FlexBox $variant="secondary" $gap={24}>
@@ -356,7 +356,7 @@ const Page = () => {
                 id="account-number"
                 name="account-number"
                 placeholder="Enter account number"
-                defaultValue={user?.vendorData.paymentInfo?.accountNumber}
+                defaultValue={user?.vendorData?.paymentInfo?.accountNumber}
               />
             </div>
             <div>
@@ -366,7 +366,7 @@ const Page = () => {
                 id="bank-name"
                 name="bank-name"
                 placeholder="Bank Name"
-                defaultValue={user?.vendorData.paymentInfo?.bankName}
+                defaultValue={user?.vendorData?.paymentInfo?.bankName}
               />
             </div>
           </FlexBox>

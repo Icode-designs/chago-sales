@@ -1,30 +1,9 @@
-// userSlice.ts
-import { VendorData } from "@/lib/services/userService";
+// userSlice.ts;
+import { Vendor } from "@/types/userTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Address {
-  street?: string;
-  city?: string;
-  state?: string;
-}
-
-export interface UserData {
-  firstName?: string;
-  lastName?: string;
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  role: "vendor";
-  photoURL?: string | null;
-  createdAt?: string;
-  updatedAt?: string;
-  phoneNumber?: string | null;
-  address?: Address;
-  vendorData: VendorData;
-}
-
 interface UserState {
-  currentUser: UserData | null;
+  currentUser: Vendor | null;
   userLoggedIn: boolean;
   loading: boolean;
   error: string | null;
@@ -41,7 +20,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserData | null>) => {
+    setUser: (state, action: PayloadAction<Vendor | null>) => {
       if (action.payload) {
         state.currentUser = action.payload;
         state.userLoggedIn = true;
@@ -67,7 +46,7 @@ const userSlice = createSlice({
       state.userLoggedIn = false;
       state.error = null;
     },
-    updateUserData: (state, action: PayloadAction<Partial<UserData>>) => {
+    updateUserData: (state, action: PayloadAction<Partial<Vendor>>) => {
       if (state.currentUser) {
         state.currentUser = { ...state.currentUser, ...action.payload };
       }

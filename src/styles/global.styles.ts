@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   --col-000: #000000;
   --col-100: #ffffff;
   --col-200: #6A00FF;
-  --col-200-light: #6A00FFe1;
+  --col-200-light: #b47effe1;
   --col-300: #FF2828;
   --col-400: #0099ffff;
   --body-bg: #FFF0F0;
@@ -85,6 +85,31 @@ p, li{
     line-height: 1.4;
 }
 
+.status {
+    padding: ${pxTorem(15)};
+    border-radius: var(--border-radius);
+  }
+
+.pending {
+      background-color: #ffbe86ff;
+      color: orange;
+    }
+
+.transit {
+      background-color: #87cefa;
+      color: #00b7ffff;
+    }
+
+.recieved, .accepted {
+      background-color: #90ee90;
+      color: #00ff00;
+    }
+.canceled, .rejected {
+      background-color: #ff4c4cff;
+      color: var(--col-300);
+    }
+
+
 input, textarea, select {
   display: block;
     border-radius: var(--border-radius);
@@ -115,7 +140,7 @@ input, textarea, select {
 
    form {
     display: grid;
-    /* max-width: ${pxTorem(800)}; */
+    max-width: ${pxTorem(1024)};
     width: 100%;
     border-radius: var(--border-radius);
     gap: ${pxTorem(32)};

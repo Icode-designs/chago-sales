@@ -70,6 +70,16 @@ const Page = () => {
         //redirect to sign-up
         redirect("/signup");
       }
+      //logout and redirect if user is suspended
+      if (userData?.status === "suspended") {
+        await handleLogoutAction();
+
+        // Log out from Firebase
+        await logoutUser();
+
+        //redirect to sign-up
+        redirect("/suspended");
+      }
 
       dispatch(setUser(userData));
 

@@ -3,19 +3,21 @@ import { FaPowerOff } from "react-icons/fa6";
 import useMediaQuery from "@/hooks/useMedia";
 import { NAV_CONTEXT } from "@/providers/NavProvider";
 import { FlexBox } from "@/styles/components/ui.Styles";
-import { LinksList, StyledSideBar } from "@/styles/components/User.styles";
+import { NavigationBox, StyledSideBar } from "@/styles/components/User.styles";
 import React, { useContext, useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { handleLogoutAction } from "@/app/user/actions";
 import { logoutUser } from "@/utils/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import NavLink from "./UserNavlink";
+import { RootState } from "@/store/store";
 
 const UserSidebar = () => {
   const router = useRouter();
   const navCtx = useContext(NAV_CONTEXT);
   const isLargeScreen = useMediaQuery(1200);
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
   useEffect(() => {
     if (!navCtx) return;
@@ -48,27 +50,26 @@ const UserSidebar = () => {
       <button onClick={toggleNav}>
         {navOpen ? <FaAngleRight /> : <FaAngleLeft />}
       </button>
+      <div>
+        <h3>Welcone vendor {user?.firstName}</h3>
+      </div>
+      <NavigationBox $show={navOpen}>
+        <NavLink href={`/user/products-list/${"all-products"}`}>
+          Manage Products
+        </NavLink>
 
-      <LinksList $show={navOpen}>
-        <li>
-          <NavLink href="/user/edit-profile">Edit Profile</NavLink>
-        </li>
-        <li>
-          <NavLink href="/user/add-product">Add Product</NavLink>
-        </li>
-        <li>
-          <NavLink href={`/user/products-list/${"all-products"}`}>
-            Products
-          </NavLink>
-        </li>
+        <NavLink href="/user/add-product">Add Product</NavLink>
 
-        <button onClick={handleLogout}>
-          <FlexBox $gap={8}>
-            <FaPowerOff />
-            <h3>Logout</h3>
-          </FlexBox>
-        </button>
-      </LinksList>
+        <NavLink href={"/user/manage-requests"}>Manage Requests</NavLink>
+
+        <NavLink href="/user/edit-profile">Edit Profile</NavLink>
+      </NavigationBox>
+      <button onClick={handleLogout}>
+        <FlexBox $gap={8}>
+          <FaPowerOff />
+          <h3>Logout</h3>
+        </FlexBox>
+      </button>
     </StyledSideBar>
   );
 };

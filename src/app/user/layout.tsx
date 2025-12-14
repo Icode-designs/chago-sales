@@ -10,7 +10,6 @@ interface UserLayoutProps {
 export default async function UserLayout({ children }: UserLayoutProps) {
   return (
     <>
-      <Header />
       <UserLayoutWrapper>
         <UserContentContainer>{children}</UserContentContainer>
       </UserLayoutWrapper>

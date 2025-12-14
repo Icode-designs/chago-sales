@@ -7,41 +7,10 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebaseCl";
-import { UserData } from "@/store/slices/userSlice";
-
-interface PaymentInfo {
-  accountNumber?: string;
-  bankName?: string;
-  accountName?: string;
-  BVN?: string;
-}
-
-export interface VendorData {
-  NIN?: string;
-  verified?: boolean;
-  establishedDate?: string;
-  businessname?: string;
-  productsOffered?: string[];
-  paymentInfo?: PaymentInfo;
-}
-
-export interface CreateUserData {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  displayName?: string;
-  role?: "vendor";
-  photoURL?: string;
-  phoneNumber?: string;
-  address?: string;
-  vendorData?: VendorData;
-}
+import { Vendor } from "@/types/userTypes";
 
 // Create user document in Firestore
-export const createUserDocument = async (
-  uid: string,
-  userData: CreateUserData
-) => {
+export const createUserDocument = async (uid: string, userData: Vendor) => {
   try {
     const userRef = doc(db, "users", uid);
 
@@ -67,7 +36,7 @@ export const createUserDocument = async (
       ...newUser,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    } as UserData;
+    } as Vendor;
   } catch (error) {
     console.error("Error creating user document:", error);
     throw error;
@@ -75,9 +44,7 @@ export const createUserDocument = async (
 };
 
 // Get user document from Firestore
-export const getUserDocument = async (
-  uid: string
-): Promise<UserData | null> => {
+export const getUserDocument = async (uid: string): Promise<Vendor | null> => {
   try {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
@@ -97,7 +64,7 @@ export const getUserDocument = async (
         vendorData: data.vendorData,
         createdAt: data.createdAt?.toDate().toISOString(),
         updatedAt: data.updatedAt?.toDate().toISOString(),
-      } as UserData;
+      } as Vendor;
     }
 
     return null;
@@ -110,7 +77,7 @@ export const getUserDocument = async (
 // Update user document
 export const updateUserDocument = async (
   uid: string,
-  updates: Partial<UserData>
+  updates: Partial<Vendor>
 ) => {
   try {
     const userRef = doc(db, "users", uid);

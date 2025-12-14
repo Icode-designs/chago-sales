@@ -12,7 +12,7 @@ import {
 // Helper: convert Firestore Timestamp → millis OR recursively clean object
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function cleanData(obj: DocumentData): any {
+export function cleanData(obj: DocumentData): any {
   if (obj instanceof Timestamp) {
     return obj.toMillis();
   }

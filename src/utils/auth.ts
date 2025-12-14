@@ -11,13 +11,13 @@ import { auth } from "@/lib/firebaseCl";
 import {
   createUserDocument,
   userDocumentExists,
-  CreateUserData,
 } from "@/lib/services/userService";
+import { Vendor, VendorData } from "@/types/userTypes";
 
 export const registerUser = async (
   email: string,
   password: string,
-  additionalData?: Partial<CreateUserData>
+  additionalData?: Partial<Vendor>
 ) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -33,16 +33,18 @@ export const registerUser = async (
     }
 
     // Create user document in Firestore
-    const userData: CreateUserData = {
+    const userData: Vendor = {
+      uid: user.uid,
       email: user.email!,
       firstName: additionalData?.firstName,
       lastName: additionalData?.lastName,
-      displayName: additionalData?.displayName || user.displayName || undefined,
+      displayName: additionalData?.displayName || user.displayName || null,
       role: "vendor",
+      status: "active",
       photoURL: user.photoURL || undefined,
       phoneNumber: additionalData?.phoneNumber || undefined,
       address: additionalData?.address || undefined,
-      vendorData: additionalData?.vendorData,
+      vendorData: additionalData?.vendorData as VendorData,
     };
 
     await createUserDocument(user.uid, userData);
@@ -77,11 +79,14 @@ export const signInWithGoogle = async () => {
     const exists = await userDocumentExists(user.uid);
 
     if (!exists) {
-      const userData: CreateUserData = {
+      const userData: Vendor = {
+        uid: user.uid,
         email: user.email!,
-        displayName: user.displayName || undefined,
+        displayName: user.displayName,
         role: "vendor",
+        status: "active",
         photoURL: user.photoURL || undefined,
+        vendorData: null,
       };
 
       await createUserDocument(user.uid, userData);

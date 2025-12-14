@@ -36,7 +36,7 @@ export interface UserData {
 
 export interface Vendor extends UserData {
   role: "vendor";
-  vendorData: VendorData;
+  vendorData: VendorData | null;
 }
 
 export type AppUser = Vendor;

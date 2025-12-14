@@ -54,14 +54,14 @@ const userSlice = createSlice({
 
     addToProducts: (state, action: PayloadAction<string>) => {
       if (state.currentUser) {
-        if (!state.currentUser.vendorData.productsOffered) {
-          state.currentUser.vendorData.productsOffered = [];
+        if (!state.currentUser.vendorData?.productsOffered) {
+          state.currentUser.vendorData!.productsOffered = [];
         }
-        state.currentUser.vendorData.productsOffered.push(action.payload);
+        state.currentUser.vendorData?.productsOffered.push(action.payload);
       }
     },
     removeFromProducts: (state, action: PayloadAction<string>) => {
-      if (state.currentUser && state.currentUser.vendorData.productsOffered) {
+      if (state.currentUser && state.currentUser.vendorData?.productsOffered) {
         state.currentUser.vendorData.productsOffered =
           state.currentUser.vendorData.productsOffered.filter(
             (itemId) => itemId !== action.payload

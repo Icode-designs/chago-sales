@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { UserContent } from "@/styles/components/User.styles";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { setUser, UserData } from "@/store/slices/userSlice";
+import { setUser } from "@/store/slices/userSlice";
 import { updateUserDocument } from "@/lib/services/userService";
 import { auth } from "@/lib/firebaseCl";
 import { updatePassword } from "firebase/auth";

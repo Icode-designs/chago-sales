@@ -1,9 +1,9 @@
 "use client";
 import { AuthMain, CustomButton, FlexBox } from "@/styles/components/ui.Styles";
-import { registerUser, signInWithGoogle } from "@/utils/auth";
+import { registerUser } from "@/utils/auth";
 import Link from "next/link";
 import React, { useState } from "react";
-import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FirebaseError } from "firebase/app";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getUserDocument } from "@/lib/services/userService";
@@ -14,6 +14,7 @@ import { setUser } from "@/store/slices/userSlice";
 interface ERRORTYPE {
   emailErr?: string;
   passwordErr?: string;
+  ninErr?: string;
   generalErr?: string;
 }
 
@@ -44,6 +45,7 @@ const Page = () => {
     const firstName = formData.get("first-name") as string;
     const lastName = formData.get("last-name") as string;
     const storeName = formData.get("store-name") as string;
+    const nin = formData.get("nin") as string;
 
     const newErrors: ERRORTYPE = {};
 
@@ -56,6 +58,12 @@ const Page = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       newErrors.emailErr = "Please enter a valid email";
+    }
+
+    // NIN validation (11 digits for Nigerian NIN)
+    const ninRegex = /^\d{11}$/;
+    if (!ninRegex.test(nin)) {
+      newErrors.ninErr = "NIN must be exactly 11 digits";
     }
 
     // If there are any errors, update state and stop
@@ -73,6 +81,7 @@ const Page = () => {
         role: "vendor" as const,
         vendorData: {
           businessname: storeName,
+          nin: nin, // Save NIN here
         },
       };
 
@@ -128,51 +137,6 @@ const Page = () => {
     }
   }
 
-  // async function handleGoogleSignup() {
-  //   setError({});
-  //   setLoading(true);
-
-  //   try {
-  //     const user = await signInWithGoogle();
-  //     console.log("User signed up with Google:", user.uid);
-
-  //     // Get ID token
-  //     const idToken = await user.getIdToken();
-
-  //     // Create session cookie
-  //     const response = await fetch("/api/auth/session", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ idToken }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to create session");
-  //     }
-
-  //     // Redirect to the original page or dashboard
-  //     router.push(redirectTo);
-  //     router.refresh();
-  //   } catch (error: unknown) {
-  //     console.error("Google signup error:", error);
-
-  //     if (
-  //       error instanceof FirebaseError &&
-  //       error.code === "auth/popup-closed-by-user"
-  //     ) {
-  //       setError({ generalErr: "Sign-up cancelled" });
-  //     } else {
-  //       setError({
-  //         generalErr: "Failed to sign up with Google. Please try again.",
-  //       });
-  //     }
-
-  //     setLoading(false);
-  //   }
-  // }
-
   function toggleShowPassword() {
     setShowPassword((prev) => !prev);
   }
@@ -182,36 +146,7 @@ const Page = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <h1>signup</h1>
-          <p>
-            or{" "}
-            <Link
-              href={`/login${
-                searchParams.get("from")
-                  ? `?from=${searchParams.get("from")}`
-                  : ""
-              }`}
-            >
-              Login To Existing Account
-            </Link>
-          </p>
         </div>
-
-        {/* Show redirect message if coming from a protected page */}
-        {searchParams.get("from") && (
-          <div
-            style={{
-              padding: "12px",
-              backgroundColor: "#EBF5FF",
-              border: "1px solid #60A5FA",
-              borderRadius: "8px",
-              marginBottom: "16px",
-              color: "#1E40AF",
-              fontSize: "14px",
-            }}
-          >
-            Create an account to access that page
-          </div>
-        )}
 
         {/* General error message */}
         {error.generalErr && (
@@ -264,8 +199,15 @@ const Page = () => {
           </div>
 
           <div>
-            <input type="number" placeholder="Enter NIN" name="nin" required />
-            {error.emailErr && <p className="error">{error.emailErr}</p>}
+            <input
+              type="text"
+              placeholder="Enter NIN (11 digits)"
+              name="nin"
+              maxLength={11}
+              pattern="\d{11}"
+              required
+            />
+            {error.ninErr && <p className="error">{error.ninErr}</p>}
           </div>
 
           <div>
@@ -284,33 +226,35 @@ const Page = () => {
             {error.passwordErr && <p className="error">{error.passwordErr}</p>}
           </div>
 
-          <input
-            type="password"
-            placeholder="Confirm password"
-            name="confirm-password"
-            minLength={8}
-            required
-          />
+          <div>
+            <input
+              type="password"
+              placeholder="Confirm password"
+              name="confirm-password"
+              minLength={8}
+              required
+            />
+            {error.passwordErr && <p className="error">{error.passwordErr}</p>}
+          </div>
         </fieldset>
 
         <CustomButton $variant="extended" type="submit" disabled={loading}>
           {loading ? "Creating account..." : "Create your account"}
         </CustomButton>
-
-        <FlexBox $justifyContent="center" className="seperator">
-          <div></div>
-          <p>or continue with</p>
-          <div></div>
+        <FlexBox $justifyContent="center">
+          <p>
+            or{" "}
+            <Link
+              href={`/login${
+                searchParams.get("from")
+                  ? `?from=${searchParams.get("from")}`
+                  : ""
+              }`}
+            >
+              Login To Existing Account
+            </Link>
+          </p>
         </FlexBox>
-
-        <button
-          className="google"
-          type="button"
-          // onClick={handleGoogleSignup}
-          disabled={loading}
-        >
-          <FaGoogle /> <p>Google</p>
-        </button>
       </form>
     </AuthMain>
   );

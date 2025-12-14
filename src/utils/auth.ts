@@ -3,15 +3,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider,
-  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "@/lib/firebaseCl";
-import {
-  createUserDocument,
-  userDocumentExists,
-} from "@/lib/services/userService";
+import { createUserDocument } from "@/lib/services/userService";
 import { Vendor, VendorData } from "@/types/userTypes";
 
 export const registerUser = async (
@@ -67,34 +62,4 @@ export const loginUser = async (email: string, password: string) => {
 
 export const logoutUser = async () => {
   await signOut(auth);
-};
-
-export const signInWithGoogle = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    const userCredential = await signInWithPopup(auth, provider);
-    const user = userCredential.user;
-
-    // Check if user document exists, if not create one
-    const exists = await userDocumentExists(user.uid);
-
-    if (!exists) {
-      const userData: Vendor = {
-        uid: user.uid,
-        email: user.email!,
-        displayName: user.displayName,
-        role: "vendor",
-        status: "active",
-        photoURL: user.photoURL || undefined,
-        vendorData: null,
-      };
-
-      await createUserDocument(user.uid, userData);
-    }
-
-    return user;
-  } catch (error) {
-    console.error("Error signing in with Google:", error);
-    throw error;
-  }
 };

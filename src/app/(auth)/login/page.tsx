@@ -1,6 +1,5 @@
 "use client";
 
-import { handleLogoutAction } from "@/app/user/actions";
 import { getUserDocument } from "@/lib/services/userService";
 import { setUser } from "@/store/slices/userSlice";
 import { AppDispatch } from "@/store/store";
@@ -9,9 +8,9 @@ import { loginUser, logoutUser } from "@/utils/auth";
 import { FirebaseError } from "firebase/app";
 
 import Link from "next/link";
-import { useSearchParams, useRouter, redirect } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { FaGoogle, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
 interface ERRORTYPE {
@@ -55,32 +54,38 @@ const Page = () => {
       const user = await loginUser(email, password);
       console.log("User logged in:", user.uid);
 
-      // Set user data
+      // Get user data BEFORE creating session
       const userData = await getUserDocument(user.uid);
 
-      //logout and redirect if user is not a seller account
-      if (userData?.role !== "vendor" || !userData) {
-        alert("user is not a seller account!!!");
-        // Delete session cookie on server
-        await handleLogoutAction();
-
-        // Log out from Firebase
+      // Check if user exists
+      if (!userData) {
         await logoutUser();
-
-        //redirect to sign-up
-        redirect("/signup");
-      }
-      //logout and redirect if user is suspended
-      if (userData?.status === "suspended") {
-        await handleLogoutAction();
-
-        // Log out from Firebase
-        await logoutUser();
-
-        //redirect to sign-up
-        redirect("/suspended");
+        setError({ generalErr: "User account not found" });
+        setLoading(false);
+        return;
       }
 
+      // Check if user is suspended
+      if (userData.status === "suspended") {
+        await logoutUser();
+        setError({ generalErr: "Your account has been suspended" });
+        setLoading(false);
+        router.push("/suspended");
+        return;
+      }
+
+      // Check if user is a vendor
+      if (userData.role !== "vendor") {
+        await logoutUser();
+        setError({
+          generalErr:
+            "This is a vendor-only portal. Please use the customer app.",
+        });
+        setLoading(false);
+        return;
+      }
+
+      // All checks passed - set user data
       dispatch(setUser(userData));
 
       // Create session cookie
@@ -103,15 +108,18 @@ const Page = () => {
       if (err instanceof FirebaseError) {
         if (err.code === "auth/invalid-credential") {
           setError({ generalErr: "Incorrect email or password" });
+        } else if (err.code === "auth/too-many-requests") {
+          setError({
+            generalErr: "Too many failed attempts. Please try again later.",
+          });
         } else {
           setError({ generalErr: err.message });
         }
       } else {
         setError({ generalErr: "Something went wrong. Try again." });
       }
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   function toggleShowPassword() {
@@ -123,21 +131,40 @@ const Page = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <h1>Login</h1>
-          <p>
-            or{" "}
-            <Link
-              href={`/signup${
-                searchParams.get("from")
-                  ? `?from=${searchParams.get("from")}`
-                  : ""
-              }`}
-            >
-              Create A New Account
-            </Link>
-          </p>
         </div>
 
-        {error.generalErr && <p className="error">{error.generalErr}</p>}
+        {/* Show redirect message if coming from a protected page */}
+        {searchParams.get("from") && (
+          <div
+            style={{
+              padding: "12px",
+              backgroundColor: "#EBF5FF",
+              border: "1px solid #60A5FA",
+              borderRadius: "8px",
+              marginBottom: "16px",
+              color: "#1E40AF",
+              fontSize: "14px",
+            }}
+          >
+            Please login to access that page
+          </div>
+        )}
+
+        {error.generalErr && (
+          <div
+            style={{
+              padding: "12px",
+              backgroundColor: "#FEE2E2",
+              border: "1px solid #EF4444",
+              borderRadius: "8px",
+              marginBottom: "16px",
+              color: "#991B1B",
+              fontSize: "14px",
+            }}
+          >
+            {error.generalErr}
+          </div>
+        )}
 
         <fieldset disabled={loading}>
           <div>
@@ -160,19 +187,24 @@ const Page = () => {
           </div>
         </fieldset>
 
-        <CustomButton $variant="extended" disabled={loading}>
+        <CustomButton $variant="extended" type="submit" disabled={loading}>
           {loading ? "Logging in..." : "login"}
         </CustomButton>
 
         <FlexBox $justifyContent="center" className="seperator">
-          <div></div>
-          <p>or continue with</p>
-          <div></div>
+          <p>
+            or{" "}
+            <Link
+              href={`/signup${
+                searchParams.get("from")
+                  ? `?from=${searchParams.get("from")}`
+                  : ""
+              }`}
+            >
+              Create A New Account
+            </Link>
+          </p>
         </FlexBox>
-
-        <button className="google" type="button" disabled={loading}>
-          <FaGoogle /> <p>Google</p>
-        </button>
       </form>
     </AuthMain>
   );

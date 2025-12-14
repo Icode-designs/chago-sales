@@ -222,7 +222,7 @@ const EditProduct = ({
       );
 
       alert("Product updated successfully!");
-      router.push("/user/products");
+      router.push(`/user/product-details/${id}`);
     } catch (err) {
       console.error("Product update error:", err);
       alert(

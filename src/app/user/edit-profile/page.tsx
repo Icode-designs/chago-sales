@@ -92,11 +92,12 @@ const Page = () => {
       updateData.vendorData = {
         ...user?.vendorData,
         paymentInfo: {
-          accountName: accountName || user?.vendorData.paymentInfo?.accountName,
+          accountName:
+            accountName || user?.vendorData?.paymentInfo?.accountName,
           accountNumber:
-            accountNumber || user?.vendorData.paymentInfo?.accountNumber,
-          bankName: bankName || user?.vendorData.paymentInfo?.bankName,
-          BVN: BVN || user?.vendorData.paymentInfo?.BVN,
+            accountNumber || user?.vendorData?.paymentInfo?.accountNumber,
+          bankName: bankName || user?.vendorData?.paymentInfo?.bankName,
+          BVN: BVN || user?.vendorData?.paymentInfo?.BVN,
         },
       };
     }
